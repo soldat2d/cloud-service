@@ -20,7 +20,8 @@ public class MainController implements WebMvcConfigurer {
     }
 
     @PostMapping("/login")
-    public boolean login () {
-        return true;
+    public String login (@RequestBody String body) {
+        System.out.println(body);
+        return "{\"auth-token\":\"qwe123\"}";
     }
 }
