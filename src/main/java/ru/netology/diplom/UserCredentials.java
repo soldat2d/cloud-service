@@ -6,7 +6,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class UserCredentials {
     private String login;
     private String password;
 }
