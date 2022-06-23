@@ -24,30 +24,29 @@ public class MainController implements WebMvcConfigurer {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserCredentials userCredentials) {
+    public ResponseEntity<String> login(@RequestBody User userCredentials) {
         System.out.println(userCredentials);
-        return new ResponseEntity("{\"auth-token\":\"" + UUID.randomUUID() + "\"}", HttpStatus.OK);
-//        return new ResponseEntity(@JsonAlias("auth-token") UUID.randomUUID() + "\"}", HttpStatus.OK);
+        return new ResponseEntity<>("{\"auth-token\":\"" + UUID.randomUUID() + "\"}", HttpStatus.OK);
     }
 
     @PostMapping("/logout")
-    public ResponseEntity logout(@CookieValue(value = "auth-token", defaultValue = "none") String authToken) {
+    public ResponseEntity<?> logout(@CookieValue(value = "auth-token", defaultValue = "none") String authToken) {
         if (authToken.equals("none")) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @GetMapping("/list")
-    public ResponseEntity list(@RequestParam(name = "limit", defaultValue = "3") Integer limit, HttpServletRequest request) {
+    public ResponseEntity<?> list(@RequestParam(name = "limit", defaultValue = "3") Integer limit, HttpServletRequest request) {
 //        PageRequest
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @PostMapping("/file")
-    public ResponseEntity file(@CookieValue(value = "auth-token", defaultValue = "none") String authToken) {
+    public ResponseEntity<?> file(@CookieValue(value = "auth-token", defaultValue = "none") String authToken) {
         if (authToken.equals("none")) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         return ResponseEntity.ok(HttpStatus.OK);
     }
