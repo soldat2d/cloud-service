@@ -1,0 +1,70 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: create-database
+      author: younguru
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: users_pk
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(250)
+                  constraints:
+                    unique: true
+                    uniqueConstraintName: users_email_uq
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(250)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: fill-base
+      author: younguru
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: email
+                  value: user1@mail.com
+              - column:
+                  name: password
+                  value: 123
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: email
+                  value: user2@mail.com
+              - column:
+                  name: password
+                  value: 1234
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: email
+                  value: user3@mail.com
+              - column:
+                  name: password
+                  value: 12345
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: email
+                  value: user4@mail.com
+              - column:
+                  name: password
+                  value: 123456

@@ -16,6 +16,8 @@ import java.util.UUID;
 public class MainController implements WebMvcConfigurer {
 
     @Autowired
+    MainService service;
+    @Autowired
     CustomRequestInterceptor customRequestInterceptor;
 
     @Override
@@ -24,9 +26,12 @@ public class MainController implements WebMvcConfigurer {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User userCredentials) {
-        System.out.println(userCredentials);
-        return new ResponseEntity<>("{\"auth-token\":\"" + UUID.randomUUID() + "\"}", HttpStatus.OK);
+    public ResponseEntity<String> login(@RequestBody User user) {
+        System.out.println(user);
+        if (service.findUser(user)) {
+            return new ResponseEntity<>("{\"auth-token\":\"" + UUID.randomUUID() + "\"}", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Error! No such user account", HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/logout")
