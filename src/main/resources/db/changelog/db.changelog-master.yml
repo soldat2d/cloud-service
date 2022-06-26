@@ -4,8 +4,10 @@ databaseChangeLog:
       id: create-database
       author: younguru
       changes:
+        - create
         - createTable:
             tableName: users
+            schemaName: public
             columns:
               - column:
                   name: id
@@ -34,6 +36,7 @@ databaseChangeLog:
       changes:
         - insert:
             tableName: users
+            schemaName: public
             columns:
               - column:
                   name: email
