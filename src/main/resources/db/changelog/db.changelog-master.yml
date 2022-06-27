@@ -18,11 +18,11 @@ databaseChangeLog:
                     primaryKeyName: users_pk
                     nullable: false
               - column:
-                  name: email
+                  name: login
                   type: varchar(250)
                   constraints:
                     unique: true
-                    uniqueConstraintName: users_email_uq
+                    uniqueConstraintName: users_login_uq
                     nullable: false
               - column:
                   name: password
@@ -39,7 +39,7 @@ databaseChangeLog:
             schemaName: public
             columns:
               - column:
-                  name: email
+                  name: login
                   value: user1@mail.com
               - column:
                   name: password
@@ -48,7 +48,7 @@ databaseChangeLog:
             tableName: users
             columns:
               - column:
-                  name: email
+                  name: login
                   value: user2@mail.com
               - column:
                   name: password
@@ -57,7 +57,7 @@ databaseChangeLog:
             tableName: users
             columns:
               - column:
-                  name: email
+                  name: login
                   value: user3@mail.com
               - column:
                   name: password
@@ -66,7 +66,7 @@ databaseChangeLog:
             tableName: users
             columns:
               - column:
-                  name: email
+                  name: login
                   value: user4@mail.com
               - column:
                   name: password

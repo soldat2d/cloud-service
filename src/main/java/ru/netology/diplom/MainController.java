@@ -8,17 +8,19 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true")
 @RequestMapping("/")
 public class MainController implements WebMvcConfigurer {
 
-    @Autowired
-    MainService service;
-    @Autowired
-    CustomRequestInterceptor customRequestInterceptor;
+    final private MainService service;
+    final private CustomRequestInterceptor customRequestInterceptor;
+
+    public MainController(@Autowired MainService service, @Autowired CustomRequestInterceptor customRequestInterceptor) {
+        this.service = service;
+        this.customRequestInterceptor = customRequestInterceptor;
+    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -27,32 +29,32 @@ public class MainController implements WebMvcConfigurer {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody User user) {
-        System.out.println(user);
-        if (service.findUser(user)) {
-            return new ResponseEntity<>("{\"auth-token\":\"" + UUID.randomUUID() + "\"}", HttpStatus.OK);
+//        System.out.println(user);
+        String uuid = service.login(user);
+        if (uuid != null) {
+            return new ResponseEntity<>("{\"auth-token\":\"" + uuid + "\"}", HttpStatus.OK);
         }
-        return new ResponseEntity<>("Error! No such user account", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Error. No such user account", HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@CookieValue(value = "auth-token", defaultValue = "none") String authToken) {
-        if (authToken.equals("none")) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        if (!authToken.equals("none") && service.logout(authToken)) {
+            return ResponseEntity.ok(HttpStatus.OK);
         }
-        return ResponseEntity.ok(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @GetMapping("/list")
     public ResponseEntity<?> list(@RequestParam(name = "limit", defaultValue = "3") Integer limit, HttpServletRequest request) {
 //        PageRequest
+        System.out.println("LISTING HERE");
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @PostMapping("/file")
-    public ResponseEntity<?> file(@CookieValue(value = "auth-token", defaultValue = "none") String authToken) {
-        if (authToken.equals("none")) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
+    public ResponseEntity<?> file(@RequestBody String file) {
+        System.out.println(file.length());
         return ResponseEntity.ok(HttpStatus.OK);
     }
 }
