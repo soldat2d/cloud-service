@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartRequest;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -53,8 +54,7 @@ public class MainController implements WebMvcConfigurer {
     }
 
     @PostMapping("/file")
-    public ResponseEntity<?> file(@RequestBody String file) {
-        System.out.println(file.length());
-        return ResponseEntity.ok(HttpStatus.OK);
+    public ResponseEntity<?> file(@RequestParam MultipartRequest request) {
+        return service.file(request) ? ResponseEntity.ok(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

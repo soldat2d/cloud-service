@@ -1,25 +1,28 @@
 package ru.netology.diplom;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Date;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "files")
 public class File {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String name;
     @Column(nullable = false)
-    private Date date;
+    private Long size;
     @Column(nullable = false)
-    private Integer size;
+    private String date;
+    @Column(unique = true, nullable = false)
+    private String key;
 }
