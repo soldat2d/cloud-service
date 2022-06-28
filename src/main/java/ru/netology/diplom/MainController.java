@@ -9,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true")
@@ -54,7 +55,7 @@ public class MainController implements WebMvcConfigurer {
     }
 
     @PostMapping("/file")
-    public ResponseEntity<?> file(@RequestParam MultipartRequest request) {
+    public ResponseEntity<?> file(MultipartRequest request) throws IOException {
         return service.file(request) ? ResponseEntity.ok(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

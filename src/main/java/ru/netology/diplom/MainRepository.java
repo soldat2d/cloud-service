@@ -11,15 +11,17 @@ import java.util.UUID;
 public class MainRepository {
     final private Map<String, User> authorizedUsers;
 //    @Autowired
-    final private CustomRepository repository;
+    final private UserRepository userRepository;
+    final private FileRepository fileRepository;
 
-    public MainRepository(@Autowired CustomRepository repository) {
+    public MainRepository(@Autowired UserRepository repository, FileRepository fileRepository) {
         this.authorizedUsers = new HashMap<>();
-        this.repository = repository;
+        this.fileRepository = fileRepository;
+        this.userRepository = repository;
     }
 
     public String login(User user) {
-        user = repository.findByLoginAndPassword(user.getLogin(), user.getPassword());
+        user = userRepository.findByLoginAndPassword(user.getLogin(), user.getPassword());
         if (user!=null) {
             String uuid = UUID.randomUUID().toString();
             authorizedUsers.put(uuid, user);
@@ -34,5 +36,9 @@ public class MainRepository {
 
     public boolean isAuthorized (String authToken) {
         return authorizedUsers.containsKey(authToken);
+    }
+
+    public boolean file(File file) {
+        return fileRepository.save(file) != null;
     }
 }

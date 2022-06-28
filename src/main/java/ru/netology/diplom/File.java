@@ -25,4 +25,6 @@ public class File {
     private String date;
     @Column(unique = true, nullable = false)
     private String key;
+    @Column(nullable = false)
+    private byte[] data;
 }

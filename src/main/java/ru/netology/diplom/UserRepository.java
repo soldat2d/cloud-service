@@ -2,6 +2,6 @@ package ru.netology.diplom;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CustomRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long>{
     User findByLoginAndPassword(String login, String password);
 }

@@ -6,6 +6,7 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 @Service
@@ -24,17 +25,17 @@ public class MainService {
         return repository.logout(authToken);
     }
 
-    public boolean file (MultipartRequest request) {
+    public boolean file (MultipartRequest request) throws IOException {
         MultipartFile multipartFile = request.getFile("file");
         LocalDateTime dateTime = LocalDateTime.now();
-        String key = DigestUtils.md5DigestAsHex((multipartFile.getOriginalFilename() + dateTime.toString()).getBytes());
+        String key = DigestUtils.md5DigestAsHex((multipartFile.getOriginalFilename() + dateTime).getBytes());
         File file = File.builder()
                 .name(multipartFile.getOriginalFilename())
                 .size(multipartFile.getSize())
                 .date(dateTime.toLocalDate().toString())
                 .key(key)
+                .data(multipartFile.getBytes())
                 .build();
-
-        return false;
+        return repository.file(file);
     }
 }
