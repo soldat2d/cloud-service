@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartRequest;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class MainService {
@@ -30,12 +31,17 @@ public class MainService {
         LocalDateTime dateTime = LocalDateTime.now();
         String key = DigestUtils.md5DigestAsHex((multipartFile.getOriginalFilename() + dateTime).getBytes());
         File file = File.builder()
-                .name(multipartFile.getOriginalFilename())
+                .filename(multipartFile.getOriginalFilename())
                 .size(multipartFile.getSize())
                 .date(dateTime.toLocalDate().toString())
                 .key(key)
                 .data(multipartFile.getBytes())
                 .build();
         return repository.file(file);
+    }
+
+    public List<File> list() {
+        List<File> temp = repository.list();
+        return temp;
     }
 }

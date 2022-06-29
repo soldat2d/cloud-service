@@ -1,9 +1,12 @@
 package ru.netology.diplom;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -14,10 +17,10 @@ public class MainRepository {
     final private UserRepository userRepository;
     final private FileRepository fileRepository;
 
-    public MainRepository(@Autowired UserRepository repository, FileRepository fileRepository) {
+    public MainRepository(@Autowired UserRepository userRepository, @Autowired FileRepository fileRepository) {
         this.authorizedUsers = new HashMap<>();
         this.fileRepository = fileRepository;
-        this.userRepository = repository;
+        this.userRepository = userRepository;
     }
 
     public String login(User user) {
@@ -40,5 +43,10 @@ public class MainRepository {
 
     public boolean file(File file) {
         return fileRepository.save(file) != null;
+    }
+
+    public List<File> list () {
+        Page<File> temp = fileRepository.findSome(PageRequest.of(0, 3));
+        return temp.toList();
     }
 }

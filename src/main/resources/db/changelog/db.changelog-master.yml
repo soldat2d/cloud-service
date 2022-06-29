@@ -90,7 +90,7 @@ databaseChangeLog:
                     primaryKeyName: files_pk
                     nullable: false
               - column:
-                  name: name
+                  name: filename
                   type: varchar(250)
                   constraints:
                     nullable: false

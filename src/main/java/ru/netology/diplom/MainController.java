@@ -10,6 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true")
@@ -48,14 +49,29 @@ public class MainController implements WebMvcConfigurer {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<?> list(@RequestParam(name = "limit", defaultValue = "3") Integer limit, HttpServletRequest request) {
+    public ResponseEntity<List<File>> list(@RequestParam(name = "limit", defaultValue = "3") Integer limit, HttpServletRequest request) {
 //        PageRequest
-        System.out.println("LISTING HERE");
-        return ResponseEntity.ok(HttpStatus.OK);
+//        System.out.println("LISTING HERE");
+        return new ResponseEntity<>(service.list(), HttpStatus.OK);
     }
 
     @PostMapping("/file")
-    public ResponseEntity<?> file(MultipartRequest request) throws IOException {
+    public ResponseEntity<?> saveFile(MultipartRequest request) throws IOException {
         return service.file(request) ? ResponseEntity.ok(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
+
+    @PutMapping("/file")
+    public ResponseEntity<?> updateFile(MultipartRequest request) throws IOException {
+        return service.file(request) ? ResponseEntity.ok(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+    @GetMapping("/file")
+    public ResponseEntity<?> loadFile(MultipartRequest request) throws IOException {
+        return service.file(request) ? ResponseEntity.ok(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+    @DeleteMapping("/file")
+    public ResponseEntity<?> deleteFile(MultipartRequest request) throws IOException {
+        return service.file(request) ? ResponseEntity.ok(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+
 }
