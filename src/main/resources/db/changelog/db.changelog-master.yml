@@ -104,13 +104,13 @@ databaseChangeLog:
                   type: varchar(250)
                   constraints:
                     nullable: false
-              - column:
-                  name: key
-                  type: varchar(250)
-                  constraints:
-                    nullable: false
-                    unique: true
-                    uniqueConstraintName: files_key_uq
+#              - column:
+#                  name: key
+#                  type: varchar(250)
+#                  constraints:
+#                    nullable: false
+#                    unique: true
+#                    uniqueConstraintName: files_key_uq
               - column:
                   name: data
                   type: bytea

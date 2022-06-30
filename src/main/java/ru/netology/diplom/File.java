@@ -23,8 +23,8 @@ public class File {
     private Long size;
     @Column(nullable = false)
     private String date;
-    @Column(unique = true, nullable = false)
-    private String key;
+//    @Column(unique = true, nullable = false)
+//    private String key;
     @Column(nullable = false)
     private byte[] data;
 }

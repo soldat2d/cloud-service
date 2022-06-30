@@ -59,17 +59,16 @@ public class MainController implements WebMvcConfigurer {
     }
 
     @PutMapping("/file")
-    public ResponseEntity<?> updateFile(MultipartRequest request) throws IOException {
-        return service.file(request) ? ResponseEntity.ok(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> updateFile(@RequestParam(name = "filename") String fileNameOld, @RequestBody String filename) throws IOException {
+        service.updateFile(fileNameOld, filename);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
     @GetMapping("/file")
-    public ResponseEntity<?> loadFile(MultipartRequest request) throws IOException {
-        return service.file(request) ? ResponseEntity.ok(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> loadFile(@RequestParam(name = "filename") String filename) throws IOException {
+        return ResponseEntity.ok(HttpStatus.OK);
     }
     @DeleteMapping("/file")
-    public ResponseEntity<?> deleteFile(@RequestParam(name = "filename") String filename) {
-        return service.deleteFile(filename) ? ResponseEntity.ok(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> deleteFile(@RequestParam(name = "filename") String fileName) {
+        return service.deleteFile(fileName) ? ResponseEntity.ok(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-
-
 }

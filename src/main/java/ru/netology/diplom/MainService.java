@@ -29,12 +29,12 @@ public class MainService {
     public boolean file (MultipartRequest request) throws IOException {
         MultipartFile multipartFile = request.getFile("file");
         LocalDateTime dateTime = LocalDateTime.now();
-        String key = DigestUtils.md5DigestAsHex((multipartFile.getOriginalFilename() + dateTime).getBytes());
+//        String key = DigestUtils.md5DigestAsHex((multipartFile.getOriginalFilename() + dateTime).getBytes());
         File file = File.builder()
                 .filename(multipartFile.getOriginalFilename())
                 .size(multipartFile.getSize())
                 .date(dateTime.toLocalDate().toString())
-                .key(key)
+//                .key(key)
                 .data(multipartFile.getBytes())
                 .build();
         return repository.file(file);
@@ -44,7 +44,11 @@ public class MainService {
         return repository.list(limit);
     }
 
-    public boolean deleteFile(String filename) throws IllegalArgumentException{
-        return repository.deleteFile(filename);
+    public boolean deleteFile(String fileName) throws IllegalArgumentException{
+        return repository.deleteFile(fileName);
+    }
+
+    public boolean updateFile(String fileNameOld, String fileName) {
+        return repository.updateFile(fileNameOld, fileName);
     }
 }

@@ -3,6 +3,7 @@ package ru.netology.diplom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -49,9 +50,19 @@ public class MainRepository {
     }
 
     public boolean deleteFile(String fileName) throws IllegalArgumentException {
-        File file = fileRepository.findByFilename(fileName);
+        File file = fileRepository.findFirstByFilename(fileName);
         if (file != null) {
             fileRepository.delete(file);
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional
+    public boolean updateFile(String fileNameOld, String fileName) {
+        File file = fileRepository.findFirstByFilename(fileNameOld);
+        if (file != null) {
+            fileRepository.setFileName(file.getId(), fileName);
             return true;
         }
         return false;
