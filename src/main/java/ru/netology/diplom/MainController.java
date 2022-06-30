@@ -49,10 +49,8 @@ public class MainController implements WebMvcConfigurer {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<File>> list(@RequestParam(name = "limit", defaultValue = "3") Integer limit, HttpServletRequest request) {
-//        PageRequest
-//        System.out.println("LISTING HERE");
-        return new ResponseEntity<>(service.list(), HttpStatus.OK);
+    public ResponseEntity<List<File>> list(@RequestParam(name = "limit", defaultValue = "4") Integer limit, HttpServletRequest request) {
+        return new ResponseEntity<>(service.list(limit), HttpStatus.OK);
     }
 
     @PostMapping("/file")
@@ -69,8 +67,8 @@ public class MainController implements WebMvcConfigurer {
         return service.file(request) ? ResponseEntity.ok(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     @DeleteMapping("/file")
-    public ResponseEntity<?> deleteFile(MultipartRequest request) throws IOException {
-        return service.file(request) ? ResponseEntity.ok(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> deleteFile(@RequestParam(name = "filename") String filename) {
+        return service.deleteFile(filename) ? ResponseEntity.ok(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 

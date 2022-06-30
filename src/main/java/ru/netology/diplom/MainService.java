@@ -40,8 +40,11 @@ public class MainService {
         return repository.file(file);
     }
 
-    public List<File> list() {
-        List<File> temp = repository.list();
-        return temp;
+    public List<File> list(Integer limit) {
+        return repository.list(limit);
+    }
+
+    public boolean deleteFile(String filename) throws IllegalArgumentException{
+        return repository.deleteFile(filename);
     }
 }
