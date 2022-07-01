@@ -8,6 +8,6 @@ public interface FileRepository extends JpaRepository<File, Long>{
     File findFirstByFilename(String fileName);
     @Modifying
     @Query("update File f set f.filename = ?2 where f.id = ?1")
-    int setFileName(Long id, String fileName);
+    int updateFileName(Long id, String fileName);
 
 }

@@ -55,12 +55,12 @@ public class MainController implements WebMvcConfigurer {
 
     @PostMapping("/file")
     public ResponseEntity<?> saveFile(MultipartRequest request) throws IOException {
-        return service.file(request) ? ResponseEntity.ok(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return service.saveFile(request) ? ResponseEntity.ok(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping("/file")
-    public ResponseEntity<?> updateFile(@RequestParam(name = "filename") String fileNameOld, @RequestBody String filename) throws IOException {
-        service.updateFile(fileNameOld, filename);
+    public ResponseEntity<?> updateFile(@RequestParam(name = "filename") String fileNameOld, @RequestBody NewFileName filename) throws IOException {
+        service.updateFile(fileNameOld, filename.getFilename());
         return ResponseEntity.ok(HttpStatus.OK);
     }
     @GetMapping("/file")

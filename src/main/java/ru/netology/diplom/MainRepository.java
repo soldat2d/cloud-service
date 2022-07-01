@@ -13,9 +13,10 @@ import java.util.UUID;
 @Repository
 public class MainRepository {
     final private Map<String, User> authorizedUsers;
-    //    @Autowired
     final private UserRepository userRepository;
     final private FileRepository fileRepository;
+    final private FileDataRepository fileRepository;
+
 
     public MainRepository(@Autowired UserRepository userRepository, @Autowired FileRepository fileRepository) {
         this.authorizedUsers = new HashMap<>();
@@ -41,7 +42,8 @@ public class MainRepository {
         return authorizedUsers.containsKey(authToken);
     }
 
-    public boolean file(File file) {
+    @Transactional
+    public boolean saveFile(File file) {
         return fileRepository.save(file) != null;
     }
 
@@ -49,6 +51,7 @@ public class MainRepository {
         return fileRepository.findAll(PageRequest.of(0, limit)).toList();
     }
 
+    @Transactional
     public boolean deleteFile(String fileName) throws IllegalArgumentException {
         File file = fileRepository.findFirstByFilename(fileName);
         if (file != null) {
@@ -62,7 +65,7 @@ public class MainRepository {
     public boolean updateFile(String fileNameOld, String fileName) {
         File file = fileRepository.findFirstByFilename(fileNameOld);
         if (file != null) {
-            fileRepository.setFileName(file.getId(), fileName);
+            fileRepository.updateFileName(file.getId(), fileName);
             return true;
         }
         return false;

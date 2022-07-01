@@ -12,17 +12,11 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "file")
-public class File {
+@Table(name = "file_data")
+public class FileData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private String filename;
-    @Column(nullable = false)
-    private Long size;
-    @Column(nullable = false)
-    private String date;
-    @Column(nullable = false, name = "data_id")
-    private Long fileData;
+    private byte[] data;
 }

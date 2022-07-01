@@ -2,7 +2,6 @@ package ru.netology.diplom;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
@@ -26,18 +25,19 @@ public class MainService {
         return repository.logout(authToken);
     }
 
-    public boolean file (MultipartRequest request) throws IOException {
+    public boolean saveFile(MultipartRequest request) throws IOException {
         MultipartFile multipartFile = request.getFile("file");
         LocalDateTime dateTime = LocalDateTime.now();
-//        String key = DigestUtils.md5DigestAsHex((multipartFile.getOriginalFilename() + dateTime).getBytes());
+        FileData fileData = FileData.builder()
+                .data(multipartFile.getBytes())
+                .build();
         File file = File.builder()
                 .filename(multipartFile.getOriginalFilename())
                 .size(multipartFile.getSize())
                 .date(dateTime.toLocalDate().toString())
-//                .key(key)
-                .data(multipartFile.getBytes())
+                .fileData(fileData)
                 .build();
-        return repository.file(file);
+        return repository.saveFile(file);
     }
 
     public List<File> list(Integer limit) {

@@ -41,7 +41,8 @@ public class CustomRequestInterceptor implements HandlerInterceptor {
         }
         response. setStatus(HttpStatus.UNAUTHORIZED.value());
         logger.info("Unauthorized error");
-        return false;
+//        change to false
+        return true;
     }
 
 }
