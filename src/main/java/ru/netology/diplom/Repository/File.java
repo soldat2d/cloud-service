@@ -1,14 +1,13 @@
-package ru.netology.diplom;
+package ru.netology.diplom.Repository;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
 @NoArgsConstructor
+@Getter
+@Setter
+@ToString(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @Builder
 @Entity
@@ -16,13 +15,17 @@ import javax.persistence.*;
 public class File {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
     private Long id;
+    @ToString.Include
     @Column(nullable = false)
     private String filename;
-    @Column(nullable = false)
-    private Long size;
+    @ToString.Include
     @Column(nullable = false)
     private String date;
+    @ToString.Include
+    @Column(nullable = false)
+    private Long size;
     @Column(nullable = false, name = "data_id")
-    private Long fileData;
+    private Long fileDataId;
 }

@@ -1,11 +1,12 @@
-package ru.netology.diplom;
+package ru.netology.diplom.Repository;
 
 import lombok.*;
 
 import javax.persistence.*;
 
-@Data
 @NoArgsConstructor
+@Getter
+@Setter
 @AllArgsConstructor
 @Entity
 @Table(name = "user")

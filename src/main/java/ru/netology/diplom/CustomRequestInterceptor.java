@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+import ru.netology.diplom.Repository.RepositoryMain;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -15,9 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class CustomRequestInterceptor implements HandlerInterceptor {
 
-    final private MainRepository repository;
+    final private RepositoryMain repository;
 
-    public CustomRequestInterceptor(@Autowired MainRepository repository) {
+    public CustomRequestInterceptor(@Autowired RepositoryMain repository) {
         this.repository = repository;
     }
 
@@ -34,15 +35,15 @@ public class CustomRequestInterceptor implements HandlerInterceptor {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (cookie.getName().equals("auth-token") && repository.isAuthorized(cookie.getValue())) {
-                    logger.info("Request authorized");
+                    logger.info("Authorized request");
                     return true;
                 }
             }
         }
         response. setStatus(HttpStatus.UNAUTHORIZED.value());
-        logger.info("Unauthorized error");
+        logger.info("Unauthorized request");
 //        change to false
-        return true;
+        return false;
     }
 
 }

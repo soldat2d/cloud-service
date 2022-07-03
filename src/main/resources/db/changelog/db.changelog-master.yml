@@ -120,19 +120,18 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: size
-                  type: int8
+                  name: date
+                  type: varchar(250)
                   constraints:
                     nullable: false
               - column:
-                  name: date
-                  type: varchar(250)
+                  name: size
+                  type: int8
                   constraints:
                     nullable: false
               - column:
                   name: data_id
                   type: int8
                   constraints:
-#                    nullable: false
                     foreignKeyName: fk_file_file_data
                     references: file_data(id)
