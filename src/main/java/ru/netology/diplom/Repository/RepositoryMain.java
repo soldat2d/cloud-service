@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 import ru.netology.diplom.ExceptionHandler.BadRequestException;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -44,8 +45,7 @@ public class RepositoryMain {
     }
 
     @Transactional
-    public boolean saveFile(MultipartRequest request) throws IOException {
-        MultipartFile multipartFile = request.getFile("file");
+    public boolean saveFile(MultipartFile multipartFile) throws IOException {
         LocalDateTime dateTime = LocalDateTime.now();
         FileData fileData = FileData.builder()
                 .data(multipartFile.getBytes())
@@ -67,7 +67,7 @@ public class RepositoryMain {
 
     @Transactional
     public boolean deleteFile(String fileName) throws IllegalArgumentException {
-        File file = fileRepository.findFirstByFilename(fileName);
+        File file = fileRepository.findFirstByFilename(fileName).get();
         FileData fileData = fileDataRepository.getReferenceById(file.getFileDataId());
         if (file != null) {
             fileRepository.delete(file);
@@ -79,11 +79,17 @@ public class RepositoryMain {
 
     @Transactional
     public boolean updateFile(String fileNameOld, String fileName) {
-        File file = fileRepository.findFirstByFilename(fileNameOld);
+        File file = fileRepository.findFirstByFilename(fileNameOld).get();
         if (file != null) {
             fileRepository.updateFileName(file.getId(), fileName);
             return true;
         }
         return false;
+    }
+
+    public byte[] getFile(String fileName) throws FileNotFoundException {
+        return fileDataRepository.findById(fileRepository.findFirstByFilename(fileName)
+                                            .orElseThrow(()-> new FileNotFoundException("Error input data")).getFileDataId())
+                .orElseThrow(()-> new FileNotFoundException("Error input data")).getData();
     }
 }

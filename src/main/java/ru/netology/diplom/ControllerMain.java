@@ -1,22 +1,23 @@
 package ru.netology.diplom;
 
 import lombok.NonNull;
+import lombok.experimental.StandardException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import ru.netology.diplom.Repository.File;
-import ru.netology.diplom.Repository.NewFileName;
-import ru.netology.diplom.Repository.RepositoryMain;
-import ru.netology.diplom.Repository.User;
+import ru.netology.diplom.Repository.*;
 
-import javax.servlet.http.HttpServletRequest;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
+@Validated
 @RestController
 @CrossOrigin(origins = "http://localhost:8080", allowCredentials = "true")
 @RequestMapping("/")
@@ -36,7 +37,7 @@ public class ControllerMain implements WebMvcConfigurer {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<AuthToken> login(@RequestBody @NonNull User user) {
+	public ResponseEntity<AuthToken> login(@RequestBody @Validated User user) {
 		return new ResponseEntity<>(new AuthToken(repository.login(user)), HttpStatus.OK);
 	}
 
@@ -53,7 +54,8 @@ public class ControllerMain implements WebMvcConfigurer {
 
 	@PostMapping("/file")
 	public ResponseEntity<?> saveFile(MultipartRequest request) throws IOException {
-		return repository.saveFile(request) ? ResponseEntity.ok(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		MultipartFile multipartFile = request.getFile("file");
+		return repository.saveFile(multipartFile) ? ResponseEntity.ok(HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
 	@PutMapping("/file")
@@ -63,8 +65,8 @@ public class ControllerMain implements WebMvcConfigurer {
 	}
 
 	@GetMapping("/file")
-	public ResponseEntity<?> loadFile(@RequestParam(name = "filename") String filename) throws IOException {
-		return ResponseEntity.ok(HttpStatus.OK);
+	public ResponseEntity<byte[]> loadFile(@RequestParam(name = "filename") String filename) throws FileNotFoundException {
+		return new ResponseEntity<>(repository.getFile(filename), HttpStatus.OK);
 	}
 
 	@DeleteMapping("/file")

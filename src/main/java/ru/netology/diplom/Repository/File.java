@@ -13,6 +13,12 @@ import javax.persistence.*;
 @Entity
 @Table(name = "file")
 public class File {
+    interface New {}
+    interface Exist {}
+    interface UpdateName extends Exist {}
+    interface Hide {}
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
