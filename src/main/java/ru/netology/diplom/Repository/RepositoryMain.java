@@ -5,13 +5,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartRequest;
 import ru.netology.diplom.ExceptionHandler.BadRequestException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Repository
 public class RepositoryMain {
@@ -30,7 +31,7 @@ public class RepositoryMain {
 
     public String login(User user) {
         userRepository.findByLoginAndPassword(user.getLogin(), user.getPassword())
-                .orElseThrow(()-> new BadRequestException("Bad credentials"));
+                .orElseThrow(() -> new BadRequestException("Bad credentials"));
         String uuid = UUID.randomUUID().toString();
         authorizedUsers.add(uuid);
         return uuid;
@@ -66,22 +67,17 @@ public class RepositoryMain {
     }
 
     @Transactional
-    public boolean deleteFile(String fileName) throws IllegalArgumentException {
-        File file = fileRepository.findFirstByFilename(fileName).get();
+    public boolean deleteFile(String fileName) throws FileNotFoundException {
+        File file = fileRepository.findFirstByFilename(fileName).orElseThrow(() -> new FileNotFoundException("Error input data"));
         FileData fileData = fileDataRepository.getReferenceById(file.getFileDataId());
-        if (file != null) {
-            fileRepository.delete(file);
-            fileDataRepository.delete(fileData);
-            return true;
-        }
-        return false;
+        fileRepository.delete(file);
+        fileDataRepository.delete(fileData);
+        return true;
     }
 
     @Transactional
-    public boolean updateFile(String fileNameOld, String fileName) {
-        File file = fileRepository.findFirstByFilename(fileNameOld).get();
-        if (file != null) {
-            fileRepository.updateFileName(file.getId(), fileName);
+    public boolean updateFile(String fileNameOld, String fileNameNew) {
+        if (fileRepository.updateFileName(fileRepository.findFirstByFilename(fileNameOld).get().getId(), fileNameNew) > 0) {
             return true;
         }
         return false;
@@ -89,7 +85,7 @@ public class RepositoryMain {
 
     public byte[] getFile(String fileName) throws FileNotFoundException {
         return fileDataRepository.findById(fileRepository.findFirstByFilename(fileName)
-                                            .orElseThrow(()-> new FileNotFoundException("Error input data")).getFileDataId())
-                .orElseThrow(()-> new FileNotFoundException("Error input data")).getData();
+                        .orElseThrow(() -> new FileNotFoundException("Error input data")).getFileDataId())
+                .orElseThrow(() -> new FileNotFoundException("Error input data")).getData();
     }
 }
