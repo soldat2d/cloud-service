@@ -19,20 +19,18 @@ public class ControllerExceptionHandler {
             NoSuchElementException.class, EntityNotFoundException.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ErrorMessage badRequestException(BadRequestException ex, WebRequest request) {
-        ErrorMessage message = new ErrorMessage(
+        return new ErrorMessage(
                 new Date(),
                 ex.getMessage(),
                 request.getDescription(false));
-        return message;
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorMessage globalExceptionHandler(Exception ex, WebRequest request) {
-        ErrorMessage message = new ErrorMessage(
+        return new ErrorMessage(
                 new Date(),
                 ex.getMessage(),
                 request.getDescription(false));
-        return message;
     }
 }
