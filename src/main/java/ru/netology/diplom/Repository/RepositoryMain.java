@@ -45,6 +45,7 @@ public class RepositoryMain {
         return authorizedUsers.contains(authToken);
     }
 
+    @SuppressWarnings("SameReturnValue")
     @Transactional
     public boolean saveFile(MultipartFile multipartFile) throws IOException {
         LocalDateTime dateTime = LocalDateTime.now();
@@ -66,6 +67,7 @@ public class RepositoryMain {
         return fileRepository.findAll(PageRequest.of(0, limit)).toList();
     }
 
+    @SuppressWarnings("SameReturnValue")
     @Transactional
     public boolean deleteFile(String fileName) throws FileNotFoundException {
         File file = fileRepository.findFirstByFilename(fileName).orElseThrow(() -> new FileNotFoundException("Error input data"));
@@ -77,10 +79,7 @@ public class RepositoryMain {
 
     @Transactional
     public boolean updateFile(String fileNameOld, String fileNameNew) {
-        if (fileRepository.updateFileName(fileRepository.findFirstByFilename(fileNameOld).get().getId(), fileNameNew) > 0) {
-            return true;
-        }
-        return false;
+        return fileRepository.updateFileName(fileRepository.findFirstByFilename(fileNameOld).get().getId(), fileNameNew) > 0;
     }
 
     public byte[] getFile(String fileName) throws FileNotFoundException {

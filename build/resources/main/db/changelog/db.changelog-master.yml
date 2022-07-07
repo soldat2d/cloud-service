@@ -1,12 +1,12 @@
 databaseChangeLog:
 
   - changeSet:
-      id: create-users
+      id: create-user
       author: younguru
       changes:
         - create
         - createTable:
-            tableName: users
+            tableName: user
             schemaName: public
             columns:
               - column:
@@ -15,14 +15,14 @@ databaseChangeLog:
                   autoIncrement: true
                   constraints:
                     primaryKey: true
-                    primaryKeyName: users_pk
+                    primaryKeyName: user_pk
                     nullable: false
               - column:
                   name: login
                   type: varchar(250)
                   constraints:
                     unique: true
-                    uniqueConstraintName: users_login_uq
+                    uniqueConstraintName: user_login_uq
                     nullable: false
               - column:
                   name: password
@@ -31,11 +31,11 @@ databaseChangeLog:
                     nullable: false
 
   - changeSet:
-      id: fill-users
+      id: fill-user
       author: younguru
       changes:
         - insert:
-            tableName: users
+            tableName: user
             schemaName: public
             columns:
               - column:
@@ -45,7 +45,7 @@ databaseChangeLog:
                   name: password
                   value: 123
         - insert:
-            tableName: users
+            tableName: user
             columns:
               - column:
                   name: login
@@ -54,7 +54,7 @@ databaseChangeLog:
                   name: password
                   value: 1234
         - insert:
-            tableName: users
+            tableName: user
             columns:
               - column:
                   name: login
@@ -63,7 +63,7 @@ databaseChangeLog:
                   name: password
                   value: 12345
         - insert:
-            tableName: users
+            tableName: user
             columns:
               - column:
                   name: login
@@ -73,12 +73,12 @@ databaseChangeLog:
                   value: 123456
 
   - changeSet:
-      id: create-files
+      id: create-file-data
       author: younguru
       changes:
         - create
         - createTable:
-            tableName: files
+            tableName: file_data
             schemaName: public
             columns:
               - column:
@@ -87,10 +87,40 @@ databaseChangeLog:
                   autoIncrement: true
                   constraints:
                     primaryKey: true
-                    primaryKeyName: files_pk
+                    primaryKeyName: file_data_pk
+                    nullable: false
+              - column:
+                  name: data
+                  type: bytea
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: create-file
+      author: younguru
+      changes:
+        - create
+        - createTable:
+            tableName: file
+            schemaName: public
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: file_pk
+                    unique: true
+                    uniqueConstraintName: file_id_uq
                     nullable: false
               - column:
                   name: filename
+                  type: varchar(250)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date
                   type: varchar(250)
                   constraints:
                     nullable: false
@@ -100,19 +130,8 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: date
-                  type: varchar(250)
+                  name: data_id
+                  type: int8
                   constraints:
-                    nullable: false
-              - column:
-                  name: key
-                  type: varchar(250)
-                  constraints:
-                    nullable: false
-                    unique: true
-                    uniqueConstraintName: files_key_uq
-              - column:
-                  name: data
-                  type: bytea
-                  constraints:
-                    nullable: false
+                    foreignKeyName: fk_file_file_data
+                    references: file_data(id)

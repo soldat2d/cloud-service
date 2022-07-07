@@ -1,6 +1,5 @@
 package ru.netology.diplom;
 
-import com.sun.istack.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,7 @@ public class CustomRequestInterceptor implements HandlerInterceptor {
     private static final Logger logger = LoggerFactory.getLogger(CustomRequestInterceptor.class);
 
     @Override
-    public boolean preHandle(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 
         logger.info(request.getMethod() + " " + request.getRequestURL() + " " + request.getQueryString());
         if (request.getMethod().equals("OPTIONS")) {
