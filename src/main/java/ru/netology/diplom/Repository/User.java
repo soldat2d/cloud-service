@@ -1,5 +1,6 @@
 package ru.netology.diplom.Repository;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ import javax.validation.constraints.Null;
 @Entity
 @Table(name = "user")
 public class User {
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Null
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

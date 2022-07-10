@@ -29,6 +29,10 @@ public class RepositoryMain {
         this.fileDataRepository = fileDataRepository;
     }
 
+    public boolean isAuthorized(String authToken) {
+        return authorizedUsers.contains(authToken);
+    }
+
     public String login(User user) {
         userRepository.findByLoginAndPassword(user.getLogin(), user.getPassword())
                 .orElseThrow(() -> new BadRequestException("Bad credentials"));
@@ -41,11 +45,11 @@ public class RepositoryMain {
         return authorizedUsers.remove(authToken);
     }
 
-    public boolean isAuthorized(String authToken) {
-        return authorizedUsers.contains(authToken);
+    @SuppressWarnings("SameReturnValue")
+    public List<File> list(Integer limit) {
+        return fileRepository.findAll(PageRequest.of(0, limit)).toList();
     }
 
-    @SuppressWarnings("SameReturnValue")
     @Transactional
     public boolean saveFile(MultipartFile multipartFile) throws IOException {
         LocalDateTime dateTime = LocalDateTime.now();
@@ -63,20 +67,7 @@ public class RepositoryMain {
         return true;
     }
 
-    public List<File> list(Integer limit) {
-        return fileRepository.findAll(PageRequest.of(0, limit)).toList();
-    }
-
     @SuppressWarnings("SameReturnValue")
-    @Transactional
-    public boolean deleteFile(String fileName) throws FileNotFoundException {
-        File file = fileRepository.findFirstByFilename(fileName).orElseThrow(() -> new FileNotFoundException("Error input data"));
-        FileData fileData = fileDataRepository.getReferenceById(file.getFileDataId());
-        fileRepository.delete(file);
-        fileDataRepository.delete(fileData);
-        return true;
-    }
-
     @Transactional
     public boolean updateFile(String fileNameOld, String fileNameNew) {
         return fileRepository.updateFileName(fileRepository.findFirstByFilename(fileNameOld).get().getId(), fileNameNew) > 0;
@@ -84,7 +75,16 @@ public class RepositoryMain {
 
     public byte[] getFile(String fileName) throws FileNotFoundException {
         return fileDataRepository.findById(fileRepository.findFirstByFilename(fileName)
-                        .orElseThrow(() -> new FileNotFoundException("Error input data")).getFileDataId())
+                                                   .orElseThrow(() -> new FileNotFoundException("Error input data")).getFileDataId())
                 .orElseThrow(() -> new FileNotFoundException("Error input data")).getData();
+    }
+
+    @Transactional
+    public boolean deleteFile(String fileName) throws FileNotFoundException {
+        File file = fileRepository.findFirstByFilename(fileName).orElseThrow(() -> new FileNotFoundException("Error input data"));
+        FileData fileData = fileDataRepository.getReferenceById(file.getFileDataId());
+        fileRepository.delete(file);
+        fileDataRepository.delete(fileData);
+        return true;
     }
 }

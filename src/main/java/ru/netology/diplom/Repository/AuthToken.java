@@ -1,4 +1,4 @@
-package ru.netology.diplom;
+package ru.netology.diplom.Repository;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

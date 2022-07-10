@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import ru.netology.diplom.Repository.AuthToken;
 import ru.netology.diplom.Repository.File;
-import ru.netology.diplom.Repository.Marker.ListFile;
+import ru.netology.diplom.Repository.Marker.FileList;
 import ru.netology.diplom.Repository.Marker.UpdateName;
 import ru.netology.diplom.Repository.RepositoryMain;
 import ru.netology.diplom.Repository.User;
@@ -48,11 +49,11 @@ public class ControllerMain implements WebMvcConfigurer {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<Boolean> logout(@CookieValue(value = "auth-token") @NotNull @NotBlank String authToken) {
+    public ResponseEntity<Boolean> logout(@CookieValue(value = "auth-token") @NotBlank String authToken) {
         return new ResponseEntity<>(repository.logout(authToken), HttpStatus.OK);
     }
 
-    @JsonView(ListFile.class)
+    @JsonView(FileList.class)
     @GetMapping("/list")
     public ResponseEntity<List<File>> list(@RequestParam(name = "limit", defaultValue = "3") @NotNull @Min(1) @Max(9) Integer limit) {
         return new ResponseEntity<>(repository.list(limit), HttpStatus.OK);
@@ -65,19 +66,19 @@ public class ControllerMain implements WebMvcConfigurer {
     }
 
     @PutMapping("/file")
-    public ResponseEntity<HttpStatus> updateFile(@RequestParam(name = "filename") @NotNull @NotBlank String fileNameOld,
+    public ResponseEntity<HttpStatus> updateFile(@RequestParam(name = "filename") @NotBlank String fileNameOld,
                                                  @RequestBody @Validated(UpdateName.class) File fileNameNew) {
         return repository.updateFile(fileNameOld, fileNameNew.getFilename()) ? new ResponseEntity<>(HttpStatus.OK) :
                 new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/file")
-    public ResponseEntity<byte[]> loadFile(@RequestParam(name = "filename") @NotNull @NotBlank String filename) throws FileNotFoundException {
+    public ResponseEntity<byte[]> loadFile(@RequestParam(name = "filename") @NotBlank String filename) throws FileNotFoundException {
         return new ResponseEntity<>(repository.getFile(filename), HttpStatus.OK);
     }
 
     @DeleteMapping("/file")
-    public ResponseEntity<Boolean> deleteFile(@RequestParam(name = "filename") @NotNull @NotBlank String fileName) throws FileNotFoundException {
+    public ResponseEntity<Boolean> deleteFile(@RequestParam(name = "filename") @NotBlank String fileName) throws FileNotFoundException {
         return new ResponseEntity<>(repository.deleteFile(fileName), HttpStatus.OK);
     }
 }
