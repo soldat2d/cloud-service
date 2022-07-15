@@ -1,11 +1,11 @@
-package ru.netology.diplom.Repository;
+package ru.netology.diplom.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import ru.netology.diplom.ExceptionHandler.BadRequestException;
+import ru.netology.diplom.exception.BadRequestException;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -15,14 +15,14 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public class RepositoryMain {
+public class MainRepository {
     final private List<String> authorizedUsers;
     final private UserRepository userRepository;
     final private FileRepository fileRepository;
     final private FileDataRepository fileDataRepository;
 
 
-    public RepositoryMain(@Autowired UserRepository userRepository, @Autowired FileRepository fileRepository, @Autowired FileDataRepository fileDataRepository) {
+    public MainRepository(@Autowired UserRepository userRepository, @Autowired FileRepository fileRepository, @Autowired FileDataRepository fileDataRepository) {
         this.authorizedUsers = new ArrayList<>();
         this.userRepository = userRepository;
         this.fileRepository = fileRepository;

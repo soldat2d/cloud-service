@@ -8,10 +8,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
-import ru.netology.diplom.Repository.AuthToken;
-import ru.netology.diplom.Repository.File;
-import ru.netology.diplom.Repository.RepositoryMain;
-import ru.netology.diplom.Repository.User;
+import ru.netology.diplom.config.CustomRequestInterceptor;
+import ru.netology.diplom.controller.MainController;
+import ru.netology.diplom.repository.AuthToken;
+import ru.netology.diplom.repository.File;
+import ru.netology.diplom.repository.MainRepository;
+import ru.netology.diplom.repository.User;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -25,14 +27,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(ControllerMain.class)
+@WebMvcTest(MainController.class)
 class ControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
 
 	@MockBean
-	private RepositoryMain repository;
+	private MainRepository repository;
 
 	@MockBean
 	private CustomRequestInterceptor requestInterceptor;

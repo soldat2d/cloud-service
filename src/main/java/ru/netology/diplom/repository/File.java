@@ -1,10 +1,10 @@
-package ru.netology.diplom.Repository;
+package ru.netology.diplom.repository;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.*;
-import ru.netology.diplom.Repository.Marker.FileFull;
-import ru.netology.diplom.Repository.Marker.FileList;
-import ru.netology.diplom.Repository.Marker.UpdateName;
+import ru.netology.diplom.repository.marker.FileFull;
+import ru.netology.diplom.repository.marker.FileList;
+import ru.netology.diplom.repository.marker.UpdateName;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;

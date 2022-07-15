@@ -9,9 +9,9 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import ru.netology.diplom.Repository.FileDataRepository;
-import ru.netology.diplom.Repository.FileRepository;
-import ru.netology.diplom.Repository.UserRepository;
+import ru.netology.diplom.repository.FileDataRepository;
+import ru.netology.diplom.repository.FileRepository;
+import ru.netology.diplom.repository.UserRepository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

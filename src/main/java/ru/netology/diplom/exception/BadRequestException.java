@@ -1,4 +1,4 @@
-package ru.netology.diplom.ExceptionHandler;
+package ru.netology.diplom.exception;
 
 import java.io.Serial;
 

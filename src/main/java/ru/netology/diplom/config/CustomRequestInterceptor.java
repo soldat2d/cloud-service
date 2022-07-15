@@ -1,4 +1,4 @@
-package ru.netology.diplom;
+package ru.netology.diplom.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import ru.netology.diplom.Repository.RepositoryMain;
+import ru.netology.diplom.repository.MainRepository;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -15,9 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class CustomRequestInterceptor implements HandlerInterceptor {
 
-    final private RepositoryMain repository;
+    final private MainRepository repository;
 
-    public CustomRequestInterceptor(@Autowired RepositoryMain repository) {
+    public CustomRequestInterceptor(@Autowired MainRepository repository) {
         this.repository = repository;
     }
 

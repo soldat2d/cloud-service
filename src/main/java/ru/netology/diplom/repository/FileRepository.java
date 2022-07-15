@@ -1,4 +1,4 @@
-package ru.netology.diplom.Repository;
+package ru.netology.diplom.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
